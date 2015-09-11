@@ -1,0 +1,7 @@
+name 'jira_server02'
+maintainer 'The Authors'
+maintainer_email 'you@example.com'
+license 'all_rights'
+description 'Installs/Configures jira_server02'
+long_description 'Installs/Configures jira_server02'
+version '0.1.0'
