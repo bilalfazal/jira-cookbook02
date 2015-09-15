@@ -5,46 +5,9 @@
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
 include_recipe 'jira_server02::user'
-# include_recipe 'jira_server02::java_installation'
-include_recipe 'jira_server02::apache_install'
-
-bash 'JavaInstall_script' do
-  code <<-EOH
-  ./opt/java_install.sh
-  EOH
-  action :nothing
-end
-
-template 'JavaInstall' do
-  source 'java_installation.erb'
-  path '/opt/java_install.sh'
-  owner 'root'
-  group 'root'
-  mode '0755'
-  notifies :run, 'bash[JavaInstall_script]', :immediately
-end
-
-template 'iptables_change' do
-  source 'iptables_rules.erb'
-  path '/etc/sysconfig/iptables'
-  owner 'root'
-  group 'root'
-  mode '0600'
-  # notifies :start, 'service[iptables]', :delayed
-end
-
-service 'iptables' do
-  action :start
-end
-
-template 'ApacheRedirect' do
-  source 'httpdConf.erb'
-  path '/etc/httpd/conf/httpd.conf'
-  owner 'root'
-  group 'root'
-  mode '0644'
-  notifies :restart, 'service[httpd]', :immediately
-end
+include_recipe 'jira_server02::java_installation'
+include_recipe 'jira_server02::apache_config'
+include_recipe 'jira_server02::iptables_rules'
 
 remote_file '/opt/atlassian-jira-6.4.11.tar.gz' do
   source node['jira_server02']['jira_download_source']
