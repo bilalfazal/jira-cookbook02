@@ -47,7 +47,8 @@ template 'ApacheRedirect' do
 end
 
 remote_file '/opt/atlassian-jira-6.4.11.tar.gz' do
-  source 'https://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-6.4.11.tar.gz'
+  source node['jira_server02']['jira_download_source']
+  # source 'https://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-6.4.11.tar.gz'
 end
 
 bash 'untarInstall-jira' do
@@ -55,26 +56,25 @@ bash 'untarInstall-jira' do
   mkdir /opt/atlassian
   tar -zxvf /opt/atlassian-jira-6.4.11.tar.gz -C /opt/atlassian/
   EOH
-  creates '/opt/atlassian/atlassian-jira-6.4.11-standalone'
+  creates node['jira_server02']['jira_basepath']
 end
 
 directory '/jira' do
-  owner 'jira'
-  group 'jira'
+  owner node['jira_server02']['application_user']
+  group node['jira_server02']['application_group']
   mode '0755'
 end
 
-template 'JiraApplication-Config' do
+template "#{node['jira_server02']['jira_basepath']}/atlassian-jira/WEB-INF/classes/jira-application.properties" do
   source 'jira-application.properties.erb'
-  path '/opt/atlassian/atlassian-jira-6.4.11-standalone/atlassian-jira/WEB-INF/classes/jira-application.properties'
-  owner 'jira'
-  group 'jira'
+  owner node['jira_server02']['application_user']
+  group node['jira_server02']['application_group']
   action :create
 end
 
 bash 'permissions-JIRA' do
   code <<-EOH
-  chown -R jira:jira /opt/atlassian
+  chown -R jira:jira "#{node['jira_server02']['jira_basepath']}"
   echo JIRA_HOME = "/jira" >> /etc/environment
   EOH
   not_if 'grep "JIRA_HOME = /jira" /etc/environment'
