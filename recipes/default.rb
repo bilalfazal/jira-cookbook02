@@ -5,8 +5,24 @@
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
 include_recipe 'jira_server02::user'
-include_recipe 'jira_server02::java_installation'
+# include_recipe 'jira_server02::java_installation'
 include_recipe 'jira_server02::apache_install'
+
+bash 'JavaInstall_script' do
+  code <<-EOH
+  ./opt/java_install.sh
+  EOH
+  action :nothing
+end
+
+template 'JavaInstall' do
+  source 'java_installation.erb'
+  path '/opt/java_install.sh'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  notifies :run, 'bash[JavaInstall_script]', :immediately
+end
 
 template 'iptables_change' do
   source 'iptables_rules.erb'
@@ -14,6 +30,7 @@ template 'iptables_change' do
   owner 'root'
   group 'root'
   mode '0600'
+  # notifies :start, 'service[iptables]', :delayed
 end
 
 service 'iptables' do
@@ -75,7 +92,6 @@ bash 'Run-JIRA' do
   code <<-EOH
   su jira
   service jira start
-  #./opt/atlassian/atlassian-jira-6.4.11-standalone/bin/start-jira.sh
   EOH
   not_if 'netstat -tulpn | grep java'
 end
