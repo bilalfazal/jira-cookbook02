@@ -14,8 +14,6 @@ template 'iptables_change' do
   owner 'root'
   group 'root'
   mode '0600'
-  # notifies :restart, 'service [iptables]', :immediately
-  # notifies :restart, 'service[iptables]', :immediately
 end
 
 service 'iptables' do
@@ -40,7 +38,7 @@ bash 'untarInstall-jira' do
   mkdir /opt/atlassian
   tar -zxvf /opt/atlassian-jira-6.4.11.tar.gz -C /opt/atlassian/
   EOH
-  creates '/opt/atlassian/'
+  creates '/opt/atlassian/atlassian-jira-6.4.11-standalone'
 end
 
 directory '/jira' do
@@ -65,13 +63,19 @@ bash 'permissions-JIRA' do
   not_if 'grep "JIRA_HOME = /jira" /etc/environment'
 end
 
+template 'JiraServiceShortcut' do
+  source 'jiraServiceShortCut.erb'
+  path '/etc/init.d/jira'
+  owner 'root'
+  group 'root'
+  mode '0755'
+end
+
 bash 'Run-JIRA' do
   code <<-EOH
   su jira
+  service jira start
   #./opt/atlassian/atlassian-jira-6.4.11-standalone/bin/start-jira.sh
   EOH
+  not_if 'netstat -tulpn | grep java'
 end
-
-# service '/opt/atlassian/atlassian-jira-6.4.11-standalone/bin/start-jira.sh' do
-# action :start
-# end

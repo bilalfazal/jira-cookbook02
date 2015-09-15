@@ -1,13 +1,16 @@
 ---
 driver:
   name: vagrant
-
+  network:
+  - ["private_network", { ip: "192.168.50.10" }]
 provisioner:
   name: chef_zero
 
 platforms:
-  - name: ubuntu-14.04
-  - name: centos-7.1
+  - name: centos-6.6
+    driver:
+      customize:
+        memory: 512
 
 suites:
   - name: default

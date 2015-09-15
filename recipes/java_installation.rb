@@ -7,6 +7,7 @@
 bash 'java-download' do
   code <<-EOH
   cd /opt/
+  mkdir /opt/atlassian
   wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u60-b27/jdk-8u60-linux-x64.tar.gz"
   tar -zxvf /opt/jdk-8u60-linux-x64.tar.gz -C /opt/atlassian/
   EOH
