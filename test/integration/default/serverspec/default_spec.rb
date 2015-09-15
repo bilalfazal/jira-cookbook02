@@ -11,7 +11,6 @@ describe file('/etc/httpd/conf/httpd.conf') do
   it { should contain 'ProxyPass / http://localhost:8080/ timeout=600' }
 end
 
-
 describe file('/opt/atlassian/atlassian-jira-6.4.11-standalone/atlassian-jira/WEB-INF/classes/jira-application.properties') do
   it { should contain 'jira.home =/jira' }
 end
@@ -31,8 +30,8 @@ describe command('ls -l /opt/atlassian | grep jira') do
   its(:stdout) { should contain('atlassian-jira-6.4.11-standalone') }
 end
 
-# A final cURL check on the initial JIRA webpage if its up or not 
+# A final cURL check on the initial JIRA webpage if its up or not
 describe command('curl -L 192.168.50.10') do
-  its(:stdout) { should contain('Set up and configure your JIRA instance') }
-  # its(:stdout) { should contain('bilalbilal') }
+  its(:stdout) { should contain('Set up and configure your JIRA instance').or contain('System Dashboard - JIRA') }
+  # its(:stdout) { should contain('System Dashboard - JIRA') }
 end
