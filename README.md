@@ -12,8 +12,8 @@ Installs Atlassian Jira Server
 
 * `recipe[jira_server02::default]` Downloads, installs and configures Atlassian JIRA. Includes the below recipes.
 * `recipe[jira_server02::java_installation]` Runs a script that downloads and configures JAVA for Jira application including env variables 
-* `recipe[jira_server02::apache_config]` Install HTTPD, enables the service, change the httpd file to setup as a port:80 proxy to localhost:8080.  
-* `recipe[jira_server02::iptables_rules]` creates iptables file (under /etc/sysconfig) with the rules and starts the sservice.
+* `recipe[jira_server02::apache_config]` Install HTTPD, enables the service, change the httpd file to setup JIRA localhost:8080 to accept incoming requests on port 80.  
+* `recipe[jira_server02::iptables_rules]` creates iptables file (under /etc/sysconfig) with the rules and starts the service.
 
 ##Integration Testing
 
