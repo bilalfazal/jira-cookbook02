@@ -23,3 +23,13 @@ Run Test Kitchen with serverspec tests
 * Included with ChefDK
 * Relies on Vagrant/Virtualbox as the driver. This is a default driver included with ChefDK
 * Brings up a VM with a DHCP IP in private space
+
+* $mkdir chef-repo
+* $cd chef-repo/
+* git clone https://github.com/bilalfazal/jira-cookbook02.git 
+* kitchen test
+* chef exec rake 
+
+To open the JIRA application:
+* get the IP address of the kitchen VM instance
+* browse to the VM IP http://#.#.#.#
