@@ -20,6 +20,6 @@ Installs Atlassian Jira Server
 Run Test Kitchen with serverspec tests
 
 #Test Kitchen
-* This is included with ChefDK
+* Included with ChefDK
 * Relies on Vagrant/Virtualbox as the driver. This is a default driver included with ChefDK
-* Brings up a vagrant VM with IP 192.168.50.10
+* Brings up a VM with a DHCP IP in private space

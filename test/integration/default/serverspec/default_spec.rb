@@ -31,7 +31,7 @@ describe command('ls -l /opt/atlassian | grep jira') do
 end
 
 # A final cURL check on the initial JIRA webpage if its up or not
-describe command('curl -L 192.168.50.10') do
-  its(:stdout) { should contain('Set up and configure your JIRA instance').or contain('System Dashboard - JIRA') }
+describe command('curl -L 127.0.0.1') do
+  its(:stdout) { should contain('Set up and configure your JIRA').or contain('System Dashboard - JIRA') }
   # its(:stdout) { should contain('System Dashboard - JIRA') }
 end
